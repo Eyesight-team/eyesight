@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    app:cardCornerRadius="8dp"
+    app:cardElevation="4dp"
+    app:cardMaxElevation="4dp"
+    app:cardUseCompatPadding="true"
+    >
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/box"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="16dp"
+        android:paddingTop="16dp"
+        android:paddingBottom="8dp"
+       >
+
+        <TextView
+            android:id="@+id/tv_total"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:maxLines="3"
+            android:textSize="14sp"
+            android:fontFamily="@font/poppins_medium"
+            tools:text="Total"
+            android:textColor="#1A1A1A"
+            android:transitionName="name" />
+
+        <TextView
+            android:id="@+id/result_total"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/tv_total"
+            app:layout_constraintStart_toStartOf="@id/tv_total"
+            android:maxLines="3"
+            android:textSize="14sp"
+            android:layout_marginTop="4dp"
+            android:fontFamily="@font/poppins_medium"
+            tools:text="5000"
+            android:textColor="#1A1A1A"
+            android:transitionName="name" />
+
+        <TextView
+            android:id="@+id/tv_lulus"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="@id/tv_total"
+            app:layout_constraintStart_toEndOf="@id/result_total"
+            app:layout_constraintBottom_toBottomOf="@id/tv_total"
+            android:layout_marginStart="16dp"
+            android:maxLines="3"
+            android:textSize="14sp"
+            android:fontFamily="@font/poppins_medium"
+            tools:text="Lulus"
+            android:textColor="#009951"
+            android:transitionName="name" />
+
+        <TextView
+            android:id="@+id/result_lulus"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/tv_lulus"
+            app:layout_constraintStart_toStartOf="@id/tv_lulus"
+            app:layout_constraintEnd_toEndOf="@id/tv_lulus"
+            android:maxLines="3"
+            android:textSize="14sp"
+            android:layout_marginTop="4dp"
+            android:fontFamily="@font/poppins_medium"
+            tools:text="4750"
+            android:textColor="#1A1A1A"
+            android:transitionName="name" />
+
+        <TextView
+            android:id="@+id/tv_failed"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="@id/tv_lulus"
+            app:layout_constraintStart_toEndOf="@id/result_lulus"
+            app:layout_constraintBottom_toBottomOf="@id/tv_lulus"
+            android:layout_marginStart="16dp"
+            android:maxLines="3"
+            android:textSize="14sp"
+            android:fontFamily="@font/poppins_medium"
+            tools:text="Gagal"
+            android:textColor="#EC221F"
+            android:transitionName="name" />
+
+        <TextView
+            android:id="@+id/result_failed"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/tv_failed"
+            app:layout_constraintStart_toStartOf="@id/tv_failed"
+            app:layout_constraintEnd_toEndOf="@id/tv_failed"
+            android:maxLines="3"
+            android:textSize="14sp"
+            android:layout_marginTop="4dp"
+            android:fontFamily="@font/poppins_medium"
+            tools:text="250"
+            android:textColor="#1A1A1A"
+            android:transitionName="name" />
+
+        <TextView
+            android:id="@+id/date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/result_lulus"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:maxLines="3"
+            android:textSize="14sp"
+            android:layout_marginTop="16dp"
+            android:fontFamily="@font/poppins_medium"
+            tools:text="20-11-2024"
+            android:textColor="#3753EF"
+            android:transitionName="name" />
+
+        <ImageView
+            android:layout_width="14dp"
+            android:layout_height="14dp"
+            android:contentDescription="@string/arrow"
+            android:src="@drawable/ic_arrow_right_blue"
+            app:layout_constraintTop_toTopOf="@id/date"
+            app:layout_constraintBottom_toBottomOf="@id/date"
+            app:layout_constraintStart_toEndOf="@id/date"
+            android:layout_marginStart="16dp"
+            android:layout_marginBottom="2dp"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>

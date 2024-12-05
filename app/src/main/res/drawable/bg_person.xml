@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="#FDEDEB"/> <!-- Warna isi -->
+    <corners android:radius="50dp"/> <!-- Membuat bentuk lingkaran -->
+
+    <!-- Stroke atau garis tepi -->
+    <stroke
+        android:color="#FDEDEB"
+        android:width="4dp" />   <!-- Lebar stroke -->
+</shape>

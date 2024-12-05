@@ -1,0 +1,95 @@
+<resources>
+    <string name="app_name">Eyesight</string>
+    <string name="first_img_content">first_img_content</string>
+    <string name="welcome_desc">Welcome to Eyesight - Enhancing production quality and efficiency</string>
+    <string name="hello_welcome">Halo, Selamat Datang</string>
+    <string name="login">Login</string>
+    <string name="register">Daftar</string>
+    <string name="or_via_social_media">Or via social media</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="google_logo">google logo</string>
+    <string name="fb_logo">fb logo</string>
+
+    <string name="your_web_client_id">36506348156-p1hpb4en31aek3iifs49ob5jlbjbg1e3.apps.googleusercontent.com</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="title_home">Beranda</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="profile">Profile</string>
+    <string name="produk">Produk</string>
+    <string name="history">History</string>
+
+    <string name="facebook_app_id">607676918484132</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+
+    <string name="lorem_ipsum">
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam in scelerisque sem. Mauris
+        volutpat, dolor id interdum ullamcorper, risus dolor egestas lectus, sit amet mattis purus
+        dui nec risus. Maecenas non sodales nisi, vel dictum dolor. Class aptent taciti sociosqu ad
+        litora torquent per conubia nostra, per inceptos himenaeos. Suspendisse blandit eleifend
+        diam, vel rutrum tellus vulputate quis. Aliquam eget libero aliquet, imperdiet nisl a,
+        ornare ex. Sed rhoncus est ut libero porta lobortis. Fusce in dictum tellus.\n\n
+        Suspendisse interdum ornare ante. Aliquam nec cursus lorem. Morbi id magna felis. Vivamus
+        egestas, est a condimentum egestas, turpis nisl iaculis ipsum, in dictum tellus dolor sed
+        neque. Morbi tellus erat, dapibus ut sem a, iaculis tincidunt dui. Interdum et malesuada
+        fames ac ante ipsum primis in faucibus. Curabitur et eros porttitor, ultricies urna vitae,
+        molestie nibh. Phasellus at commodo eros, non aliquet metus. Sed maximus nisl nec dolor
+        bibendum, vel congue leo egestas.\n\n
+        Sed interdum tortor nibh, in sagittis risus mollis quis. Curabitur mi odio, condimentum sit
+        amet auctor at, mollis non turpis. Nullam pretium libero vestibulum, finibus orci vel,
+        molestie quam. Fusce blandit tincidunt nulla, quis sollicitudin libero facilisis et. Integer
+        interdum nunc ligula, et fermentum metus hendrerit id. Vestibulum lectus felis, dictum at
+        lacinia sit amet, tristique id quam. Cras eu consequat dui. Suspendisse sodales nunc ligula,
+        in lobortis sem porta sed. Integer id ultrices magna, in luctus elit. Sed a pellentesque
+        est.\n\n
+        Aenean nunc velit, lacinia sed dolor sed, ultrices viverra nulla. Etiam a venenatis nibh.
+        Morbi laoreet, tortor sed facilisis varius, nibh orci rhoncus nulla, id elementum leo dui
+        non lorem. Nam mollis ipsum quis auctor varius. Quisque elementum eu libero sed commodo. In
+        eros nisl, imperdiet vel imperdiet et, scelerisque a mauris. Pellentesque varius ex nunc,
+        quis imperdiet eros placerat ac. Duis finibus orci et est auctor tincidunt. Sed non viverra
+        ipsum. Nunc quis augue egestas, cursus lorem at, molestie sem. Morbi a consectetur ipsum, a
+        placerat diam. Etiam vulputate dignissim convallis. Integer faucibus mauris sit amet finibus
+        convallis.\n\n
+        Phasellus in aliquet mi. Pellentesque habitant morbi tristique senectus et netus et
+        malesuada fames ac turpis egestas. In volutpat arcu ut felis sagittis, in finibus massa
+        gravida. Pellentesque id tellus orci. Integer dictum, lorem sed efficitur ullamcorper,
+        libero justo consectetur ipsum, in mollis nisl ex sed nisl. Donec maximus ullamcorper
+        sodales. Praesent bibendum rhoncus tellus nec feugiat. In a ornare nulla. Donec rhoncus
+        libero vel nunc consequat, quis tincidunt nisl eleifend. Cras bibendum enim a justo luctus
+        vestibulum. Fusce dictum libero quis erat maximus, vitae volutpat diam dignissim.
+    </string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="arrow">arrow</string>
+    <string name="firstname">Firstname</string>
+    <string name="lastname">Lastname</string>
+    <string name="email">Email</string>
+    <string name="birth_of_date">Tanggal lahir</string>
+    <string name="_18_03_2004">18/03/2004</string>
+    <string name="phone_number">Nomor Telepon</string>
+    <string name="phone">089614395761</string>
+    <string name="company_name">PT. Tbk Jaya Indonesia</string>
+    <string name="company_address">Alamat Perusahaan</string>
+    <string name="company_address_hint">Jl. Wiyung No. 89, Kota Surabaya, Indonesia</string>
+    <string name="img_product">img_product</string>
+    <string name="shopee">Shopee</string>
+    <string name="self_form">Formulir Data Diri</string>
+    <string name="desc_self_form">Isi Data diri dulu ya !</string>
+    <string name="close_btn_profile">close_btn_profile</string>
+    <string name="user_name">Your Name</string>
+    <string name="jobdesc">Computer Vision Engineer</string>
+    <string name="history_check">Riwayat Pemeriksaan</string>
+    <string name="notyet_history">Kamu belum memiliki riwayat</string>
+    <string name="leave">leave</string>
+    <string name="tv_company_name">Perusahaan</string>
+    <string name="notyet">Belum</string>
+    <string name="already">Sudah</string>
+    <string name="title_option_notyet_already">Sudah memiliki produk kami ?</string>
+
+
+</resources>

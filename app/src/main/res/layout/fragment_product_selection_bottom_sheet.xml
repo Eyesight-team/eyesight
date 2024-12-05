@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:background="@android:color/white">
+
+    <TextView
+        android:id="@+id/labelSelectProduct"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Pilih Produk Series Anda"
+        android:textSize="18sp"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        android:layout_marginBottom="16dp"/>
+
+    <!-- Pilihan produk dengan Radio Buttons -->
+    <RadioGroup
+        android:id="@+id/radioGroupProduct"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <RadioButton
+            android:id="@+id/radioProductOption1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Series A" />
+
+        <RadioButton
+            android:id="@+id/radioProductOption2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Series B" />
+
+        <RadioButton
+            android:id="@+id/radioProductOption3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Series C" />
+    </RadioGroup>
+
+    <Button
+        android:id="@+id/btn_confirm"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Pilih Produk"
+        android:textColor="@android:color/white"
+        android:background="@drawable/rectangle_primary"
+        android:layout_marginTop="16dp"/>
+
+</LinearLayout>
