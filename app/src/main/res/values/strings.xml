@@ -12,6 +12,7 @@
     <string name="fb_logo">fb logo</string>
 
     <string name="your_web_client_id">36506348156-p1hpb4en31aek3iifs49ob5jlbjbg1e3.apps.googleusercontent.com</string>
+
     <string name="title_activity_main">MainActivity</string>
     <string name="title_home">Beranda</string>
     <string name="title_dashboard">Dashboard</string>
@@ -90,6 +91,28 @@
     <string name="notyet">Belum</string>
     <string name="already">Sudah</string>
     <string name="title_option_notyet_already">Sudah memiliki produk kami ?</string>
+    <string name="_0">0</string>
+    <string name="eyesight_icon">Eyesight Icon</string>
+    <string name="company_image">Company Image</string>
+    <string name="visi_dan_misi">Visi Dan Misi</string>
+    <string name="visi_company">Visi Perusahaan</string>
+    <string name="title_misi">Misi kami adalah menyediakan solusi machine vision terbaik untuk membantu industri meningkatkan kualitas produk secara otomatis, akurat, dan efisien, dengan memanfaatkan teknologi visual terkini</string>
+    <string name="title_visi">Menjadi pemimpin global dalam inovasi machine vision, memberikan kontribusi terhadap otomatisasi industri dengan teknologi yang meningkatkan kualitas dan efisiensi di setiap lini produksi</string>
+    <string name="desc_quality">Meningkatkan Kualitas, Memperjelas Masa Depan</string>
+    <string name="about_us">About Us</string>
+    <string name="from">From</string>
+    <string name="mode_off">Mode : OFF</string>
+    <string name="belum_memiliki_produk_beli_sekarang">Belum Memiliki Produk ? \n Beli Sekarang</string>
+    <string name="buy_product">Beli Produk</string>
+    <string name="atau_kalau_sudah_punya">Atau kalau sudah punya</string>
+    <string name="choose_product_series">Pilih Produk Series</string>
+    <string name="mode_on">Mode : ON</string>
+    <string name="img_logo_left">Img Logo Left</string>
+    <string name="img_logo_right">Img Logo Right</string>
+    <string name="contact_us">Contact Us</string>
+    <string name="_6289668941246">+6289668941246</string>
+    <string name="email_title">eyesightvision01@gmail.com</string>
+    <string name="jl_manyar_sebrangan_no_89_surabaya_indonesia">Jl. Manyar Sebrangan No. 89, Surabaya,\nIndonesia</string>
 
 
 </resources>

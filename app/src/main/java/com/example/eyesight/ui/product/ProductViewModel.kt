@@ -1,4 +1,4 @@
-package com.example.eyesight.ui.dashboard
+package com.example.eyesight.ui.product
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

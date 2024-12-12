@@ -1,4 +1,4 @@
-package com.example.eyesight.ui.profile
+package com.example.eyesight.ui.companyprofile
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import com.example.eyesight.databinding.FragmentCompanyProfileBinding
 import com.example.eyesight.ui.MainActivity
-import com.example.eyesight.ui.notifications.HistoryViewModel
+import com.example.eyesight.ui.history.HistoryViewModel
 
 
 class CompanyProfileFragment : Fragment() {

@@ -1,10 +1,9 @@
-package com.example.eyesight.ui.dashboard
+package com.example.eyesight.ui.product
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.eyesight.databinding.FragmentProductBinding
@@ -28,7 +27,6 @@ class ProductFragment : Fragment() {
 
         _binding = FragmentProductBinding.inflate(inflater, container, false)
         val root: View = binding.root
-
 
             (activity as? MainActivity)?.setToolbarTitle("Produk")
 

@@ -60,7 +60,10 @@
             android:fontFamily="@font/poppins_semibold"
             android:layout_gravity="start"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"/>
+            app:layout_constraintStart_toStartOf="parent"
+            android:maxWidth="120dp"
+            android:ellipsize="end"
+            android:maxLines="1"/>
 
         <TextView
             android:id="@+id/toolbar_desc_name"

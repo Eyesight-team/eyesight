@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
@@ -21,18 +22,20 @@ import com.example.eyesight.ui.MainActivity
 import com.example.eyesight.ui.auth.LoginActivity
 import com.example.eyesight.ui.home.HomeViewModel
 import com.google.firebase.Firebase
+import com.google.firebase.FirebaseOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.firestore
+import com.google.firestore.v1.FirestoreGrpc.FirestoreImplBase
+import java.io.FileInputStream
 import java.util.Calendar
 
 class FormActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityFormBinding
 
-    private lateinit var sharedPreferences: SharedPreferences
     private lateinit var sessionManager: SessionManager
-
-    private lateinit var homeViewModel: HomeViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,8 +45,6 @@ class FormActivity : AppCompatActivity() {
         val auth = FirebaseAuth.getInstance()
 
         sessionManager = SessionManager(this)
-
-        sharedPreferences = getSharedPreferences("UserPreferences", Context.MODE_PRIVATE)
 
         binding.backBtn.setOnClickListener {
                 auth.signOut()
@@ -59,7 +60,6 @@ class FormActivity : AppCompatActivity() {
             val companyAddress = binding.edtCompanyAddress.text.toString().trim()
             val jobDesc = binding.edtJobdesc.text.toString().trim()
 
-            // Ambil status apakah pengguna memiliki produk atau tidak
             val haveProduct = when (binding.radioGroup.checkedRadioButtonId) {
                 R.id.radioButtonOptionAlready -> true
                 R.id.radioButtonOptionNotYet -> false
@@ -107,14 +107,11 @@ class FormActivity : AppCompatActivity() {
                     optionProduct
                 )
 
-                // Tampilkan Toast
                 Toast.makeText(this, "Data saved successfully!", Toast.LENGTH_SHORT).show()
 
-                // Navigasi ke MainActivity
                 startActivity(Intent(this@FormActivity, MainActivity::class.java))
-                finish()  // Menutup FormActivity jika diperlukan
+                finish()
             } else {
-                // Jika ada input yang kosong
                 Toast.makeText(this, "Please fill all fields!", Toast.LENGTH_SHORT).show()
             }
         }
@@ -132,11 +129,11 @@ class FormActivity : AppCompatActivity() {
                     binding.radioGroup2.visibility = View.VISIBLE
                     binding.titleOptionProduct.visibility = View.VISIBLE
 
-                    sharedPreferences.edit().apply{
-                        putBoolean("HAVE_PRODUCT", true)
-                        putString("PRODUCT", "Already have product")
-                        apply()
-                    }
+//                    sharedPreferences.edit().apply{
+//                        putBoolean("HAVE_PRODUCT", true)
+//                        putString("PRODUCT", "Already have product")
+//                        apply()
+//                    }
                 }
                 R.id.radioButtonOptionNotYet -> {
                     val colorStateList = ContextCompat.getColorStateList(this, R.color.secondary)
@@ -144,11 +141,11 @@ class FormActivity : AppCompatActivity() {
                     binding.radioGroup2.visibility = View.GONE
                     binding.titleOptionProduct.visibility = View.GONE
 
-                    sharedPreferences.edit().apply{
-                        putBoolean("HAVE_PRODUCT", false)
-                        putString("PRODUCT", "Do not have the product")
-                        apply()
-                    }
+//                    sharedPreferences.edit().apply{
+//                        putBoolean("HAVE_PRODUCT", false)
+//                        putString("PRODUCT", "Do not have the product")
+//                        apply()
+//                    }
                 }
             }
         }
@@ -192,17 +189,38 @@ class FormActivity : AppCompatActivity() {
         haveProduct: Boolean,
         productOption: String
     ) {
-        val editor = sharedPreferences.edit()
-        editor.putString("FIRST_NAME", firstName)
-        editor.putString("LAST_NAME", lastName)
-        editor.putString("BIRTH_DATE", birthDate)
-        editor.putString("PHONE_NUMBER", phoneNumber)
-        editor.putString("COMPANY_NAME", companyName)
-        editor.putString("COMPANY_ADDRESS", companyAddress)
-        editor.putString("JOBDESC", jobDesc)
-        editor.putBoolean("HAVE_PRODUCT", haveProduct)
-        editor.putString("PRODUCT_NAME", productOption)
-        editor.apply()
+        val db = Firebase.firestore
+
+        val user = FirebaseAuth.getInstance().currentUser
+        val userId = user?.uid
+
+        if (userId != null) {
+
+            val userData = hashMapOf(
+                "first_name" to firstName,
+                "last_name" to lastName,
+                "born" to birthDate,
+                "phone_number" to phoneNumber,
+                "company_name" to companyName,
+                "company_address" to companyAddress,
+                "jobdesc" to jobDesc,
+                "have_product" to haveProduct,
+                "product_name" to productOption
+            )
+            db.collection("users")
+                .document(userId)
+                .set(userData)
+                .addOnSuccessListener {
+                    Log.d(TAG, "User Data successfully saved with Id : $userId")
+                }
+
+                .addOnFailureListener { e ->
+                    Log.w(TAG, "Error saving user data", e)
+                }
+        } else {
+            Log.w(TAG, "No user is currently logged in")
+        }
+
     }
 
     private fun showDatePickerDialog() {
@@ -213,13 +231,17 @@ class FormActivity : AppCompatActivity() {
 
         val datePickerDialog = DatePickerDialog(this,
             { _, selectedYear, selectedMonth, selectedDay ->
-                // Menyusun tanggal yang dipilih ke format yang lebih user-friendly
                 val selectedDate = "$selectedDay/${selectedMonth + 1}/$selectedYear"
 
-                // Menampilkan tanggal yang dipilih di EditText
                 binding.edtBirthOfDate.setText(selectedDate)
             }, year, month, day)
 
         datePickerDialog.show()
     }
+
+    companion object {
+        private const val TAG = "FormActivity"
+    }
+
+
     }

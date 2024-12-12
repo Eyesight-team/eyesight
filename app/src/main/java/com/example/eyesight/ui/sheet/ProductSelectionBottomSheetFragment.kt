@@ -1,8 +1,7 @@
-package com.example.eyesight
+package com.example.eyesight.ui.sheet
 
 import android.app.AlertDialog
-import android.content.Context
-import android.content.SharedPreferences
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -14,14 +13,15 @@ import android.widget.RadioGroup
 import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
+import com.example.eyesight.R
+import com.example.eyesight.SplashScreen
 import com.example.eyesight.ui.home.HomeViewModel
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.google.firebase.Firebase
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.firestore
 
 class ProductSelectionBottomSheetFragment : DialogFragment() {
 
-    private lateinit var sharedPreferences: SharedPreferences
-
-    private lateinit var homeViewModel: HomeViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -33,12 +33,9 @@ class ProductSelectionBottomSheetFragment : DialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        sharedPreferences = requireContext().getSharedPreferences("UserPreferences", Context.MODE_PRIVATE)
-
         val radioGroup = view.findViewById<RadioGroup>(R.id.radioGroupProduct)
         val btnConfirm = view.findViewById<Button>(R.id.btn_confirm)
 
-        homeViewModel = ViewModelProvider(requireActivity()).get(HomeViewModel::class.java)
 
         btnConfirm.setOnClickListener {
             val selectedId = radioGroup.checkedRadioButtonId
@@ -46,11 +43,14 @@ class ProductSelectionBottomSheetFragment : DialogFragment() {
                 val radioButton = view.findViewById<RadioButton>(selectedId)
                 val selectedProduct = radioButton.text.toString()
 
-                selectedProduct(selectedProduct)
-                homeViewModel.setProductStatus(true)
+                selectedProduct(selectedProduct, true)
                 Toast.makeText(context, "Pilihan: $selectedProduct", Toast.LENGTH_SHORT).show()
-                dismiss()
-                showExitDialog()
+                if (isAdded && isResumed) {
+                    showExitDialog()
+                } else {
+                    Toast.makeText(requireContext(), "Error", Toast.LENGTH_SHORT).show()
+                    Log.e("ProductSelection", "Fragment belum aktif atau terpasang.")
+                }
             } else {
                 Toast.makeText(context, "Silakan pilih produk", Toast.LENGTH_SHORT).show()
             }
@@ -58,23 +58,40 @@ class ProductSelectionBottomSheetFragment : DialogFragment() {
     }
 
     private fun showExitDialog() {
+
         val builder = AlertDialog.Builder(requireContext())
         builder.setTitle("Perubahan Produk Tersimpan")
         builder.setMessage("Untuk melihat perubahan tampilan, anda harus keluar dari aplikasi.")
 
-        builder.setPositiveButton("OK") { _, _ ->
-            Toast.makeText(context, "Keluar aplikasi...", Toast.LENGTH_SHORT).show()
-            requireActivity().finish()
-        }
+        builder.create()
 
-        val dialog = builder.create()
-        dialog.show()
+            val intent = Intent(requireContext(), SplashScreen::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+            startActivity(intent)
+
     }
 
-    private fun selectedProduct(selectedProduct: String) {
-        val editor = sharedPreferences.edit()
-        editor.putString("PRODUCT_NAME", selectedProduct)
-//        homeViewModel.saveProductStatus(true)
-        editor.apply()
+    private fun selectedProduct(selectedProduct: String, haveProduct: Any) {
+        val user = FirebaseAuth.getInstance()
+        val userId = user.uid
+        val db = Firebase.firestore
+
+        if (userId != null) {
+
+            val updateData = hashMapOf(
+                "product_name" to selectedProduct,
+                "have_product" to haveProduct
+            )
+
+            db.collection("users")
+                .document(userId)
+                .update(updateData)
+                .addOnSuccessListener { data ->
+                    Log.w("ProductSelectionSheet", "Data Product successfully changed $data")
+                }
+                .addOnFailureListener { e ->
+                    Log.w("ProductSelectionSheet", "Error saving user data", e)
+                }
+        }
     }
 }

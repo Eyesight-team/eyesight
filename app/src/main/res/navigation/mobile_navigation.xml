@@ -12,20 +12,20 @@
         tools:layout="@layout/fragment_home" />
 
     <fragment
-        android:id="@+id/navigation_dashboard"
-        android:name="com.example.eyesight.ui.dashboard.ProductFragment"
+        android:id="@+id/navigation_product"
+        android:name="com.example.eyesight.ui.product.ProductFragment"
         android:label="@string/title_dashboard"
         tools:layout="@layout/fragment_product" />
 
     <fragment
         android:id="@+id/navigation_history"
-        android:name="com.example.eyesight.ui.notifications.HistoryFragment"
+        android:name="com.example.eyesight.ui.history.HistoryFragment"
         android:label="@string/title_notifications"
         tools:layout="@layout/fragment_history" />
 
     <fragment
         android:id="@+id/navigation_profile"
-        android:name="com.example.eyesight.ui.profile.CompanyProfileFragment"
+        android:name="com.example.eyesight.ui.companyprofile.CompanyProfileFragment"
         android:label="@string/profile"
         tools:layout="@layout/fragment_company_profile" />
 

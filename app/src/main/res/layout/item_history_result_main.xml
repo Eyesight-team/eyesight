@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    app:cardCornerRadius="4dp"
+    app:cardElevation="4dp"
+    app:cardMaxElevation="4dp"
+    app:cardUseCompatPadding="true"
+    android:layout_gravity="center_horizontal"
+    >
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/box"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="16dp"
+        android:paddingTop="16dp"
+        android:paddingBottom="8dp"
+        >
+
+        <TextView
+            android:id="@+id/tv_id"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:maxLines="3"
+            android:textSize="14sp"
+            android:fontFamily="@font/poppins_medium"
+            tools:text="ID"
+            android:textColor="@color/text_color_1a"
+            android:transitionName="name"
+            android:layout_marginStart="10dp"/>
+
+        <TextView
+            android:id="@+id/tv_item_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/tv_id"
+            app:layout_constraintStart_toStartOf="parent"
+            android:maxLines="3"
+            android:textSize="14sp"
+            android:fontFamily="@font/poppins_medium"
+            tools:text="Nama Barang"
+            android:textColor="@color/text_color_1a"
+            android:transitionName="name"
+            android:layout_marginTop="8dp"
+            android:layout_marginStart="10dp"/>
+
+        <TextView
+            android:id="@+id/tv_feasibility_test"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/tv_item_name"
+            app:layout_constraintStart_toStartOf="parent"
+            android:maxLines="3"
+            android:textSize="14sp"
+            android:fontFamily="@font/poppins_medium"
+            tools:text="Uji Kelayakan"
+            android:textColor="@color/text_color_1a"
+            android:transitionName="name"
+            android:layout_marginTop="8dp"
+            android:layout_marginStart="10dp"/>
+
+        <TextView
+            android:id="@+id/tv_confidence"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/tv_feasibility_test"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/tv_item_name"
+            android:maxLines="3"
+            android:textSize="14sp"
+            android:fontFamily="@font/poppins_medium"
+            tools:text="Confidence Level"
+            android:textColor="@color/text_color_1a"
+            android:transitionName="name"
+            android:layout_marginTop="8dp"
+            android:layout_marginStart="10dp" />
+
+        <TextView
+            android:id="@+id/result_id"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="@id/tv_id"
+            app:layout_constraintBottom_toBottomOf="@id/tv_id"
+            app:layout_constraintStart_toEndOf="@id/tv_item_name"
+            android:maxLines="3"
+            android:textSize="14sp"
+            android:fontFamily="@font/poppins_medium"
+            tools:text="r1811246"
+            android:textColor="@color/text_color_1a"
+            android:transitionName="name"
+            android:layout_marginTop="8dp"
+            android:layout_marginStart="16dp"/>
+
+        <TextView
+            android:id="@+id/result_item_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="@id/tv_item_name"
+            app:layout_constraintBottom_toBottomOf="@id/tv_item_name"
+            app:layout_constraintStart_toStartOf="@id/result_id"
+            android:maxLines="3"
+            android:textSize="14sp"
+            android:fontFamily="@font/poppins_medium"
+            tools:text="Apel"
+            android:textColor="@color/text_color_1a"
+            android:transitionName="name" />
+
+        <TextView
+            android:id="@+id/result_feasibility_test"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="@id/tv_feasibility_test"
+            app:layout_constraintBottom_toBottomOf="@id/tv_feasibility_test"
+            app:layout_constraintStart_toStartOf="@id/result_id"
+            android:maxLines="3"
+            android:textSize="14sp"
+            android:fontFamily="@font/poppins_medium"
+            tools:text="80%"
+            android:textColor="@color/text_color_1a"
+            android:transitionName="name"
+            />
+
+        <TextView
+            android:id="@+id/result_confidence_level"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="@id/tv_confidence"
+            app:layout_constraintBottom_toBottomOf="@id/tv_confidence"
+            app:layout_constraintStart_toStartOf="@id/result_id"
+            android:maxLines="3"
+            android:textSize="14sp"
+            android:fontFamily="@font/poppins_medium"
+            tools:text="75%"
+            android:textColor="@color/text_color_1a"
+            android:transitionName="name" />
+
+        <TextView
+            android:id="@+id/desc_feasibility_test"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="@id/result_feasibility_test"
+            app:layout_constraintBottom_toBottomOf="@id/result_feasibility_test"
+            app:layout_constraintStart_toEndOf="@id/result_id"
+            android:maxLines="3"
+            android:textSize="14sp"
+            android:fontFamily="@font/poppins_medium"
+            tools:text="Lulus"
+            android:textColor="@color/text_color_1a"
+            android:transitionName="name"
+            android:layout_marginStart="16dp"/>
+
+        <ImageView
+            android:id="@+id/ic_feasibility_test"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/failed_ic"
+            app:layout_constraintTop_toTopOf="@id/desc_feasibility_test"
+            app:layout_constraintBottom_toBottomOf="@id/desc_feasibility_test"
+            app:layout_constraintStart_toEndOf="@id/desc_feasibility_test"
+            android:layout_marginStart="10dp" />
+
+        <TextView
+            android:id="@+id/result_date"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/result_confidence_level"
+            android:maxLines="3"
+            android:textSize="11sp"
+            android:fontFamily="@font/poppins_medium"
+            tools:text="18-11-2024, 16:51 WIB"
+            android:textColor="@color/text_color_1a"
+            android:transitionName="name"
+            android:layout_marginTop="8dp" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>

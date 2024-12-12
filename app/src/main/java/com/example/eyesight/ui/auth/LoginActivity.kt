@@ -28,22 +28,20 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.auth
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.firestore
 import kotlinx.coroutines.launch
 
 class  LoginActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityLoginBinding
 
-    private lateinit var auth: FirebaseAuth
 
-    private lateinit var sessionManager: SessionManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        sessionManager = SessionManager(this)
 
         val text = getString(R.string.welcome_desc)
 
@@ -55,10 +53,8 @@ class  LoginActivity : AppCompatActivity() {
 
         binding.tvDescWelcome.text = spannableString
 
-        auth = Firebase.auth
-
         if (FirebaseAuth.getInstance().currentUser != null) {
-            startActivity(Intent(this, MainActivity::class.java))
+            startActivity(Intent(this@LoginActivity, MainActivity::class.java))
             finish()
         } else {
             binding.btnGoogle.setOnClickListener {
@@ -66,7 +62,7 @@ class  LoginActivity : AppCompatActivity() {
                 signInWithGoogle()
             }
             binding.btnFb.setOnClickListener {
-                showToast("Silahkan Login menggunakan Google terlebih dahulu !")
+                showToast("Maaf, Login fb masih dalam proses... silahkan menggunakan akun google terlebih dahulu !")
             }
         }
     }
@@ -129,15 +125,34 @@ class  LoginActivity : AppCompatActivity() {
 
     private fun updateUI(currentUser: FirebaseUser?) {
         showToast("Update UI ...")
+
         if (currentUser != null) {
-               startActivity(Intent(this@LoginActivity, FormActivity::class.java))
-            finish()
+
+            val userId = currentUser.uid
+            val db = FirebaseFirestore.getInstance()
+
+            db.collection("users")
+                .document(userId)
+                .get()
+                .addOnSuccessListener { doc ->
+                    if (doc.exists()) {
+                        // Jika dokumen pengguna ada di Firestore, arahkan ke MainActivity
+                        startActivity(Intent(this@LoginActivity, MainActivity::class.java))
+                    } else {
+                        // Jika dokumen pengguna tidak ada, arahkan ke FormActivity untuk mengisi data
+                        startActivity(Intent(this@LoginActivity, FormActivity::class.java))
+                    }
+                    finish()
+                }
+                .addOnFailureListener { e ->
+                    finish()
+                }
         }
     }
 
     override fun onStart() {
         super.onStart()
-        val currentUser = auth.currentUser
+        val currentUser = FirebaseAuth.getInstance().currentUser
         updateUI(currentUser)
     }
 
@@ -147,7 +162,6 @@ class  LoginActivity : AppCompatActivity() {
 
     override fun onStop() {
         super.onStop()
-        // Menyembunyikan progress bar saat activity berhenti
         binding.progressBar.visibility = View.GONE
     }
 

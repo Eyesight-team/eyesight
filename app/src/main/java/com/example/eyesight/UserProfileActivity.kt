@@ -1,5 +1,6 @@
 package com.example.eyesight
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
@@ -20,6 +21,7 @@ import com.example.eyesight.helper.SessionManager
 import com.example.eyesight.ui.auth.LoginActivity
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.firestore
 
 class UserProfileActivity : AppCompatActivity() {
 
@@ -27,8 +29,7 @@ class UserProfileActivity : AppCompatActivity() {
 
     private lateinit var historyAdapter: HistoryAdapter
 
-    private lateinit var sharedPreferences: SharedPreferences
-
+    @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -38,27 +39,40 @@ class UserProfileActivity : AppCompatActivity() {
 
         val auth = FirebaseAuth.getInstance()
 
-        sharedPreferences = getSharedPreferences("UserPreferences", Context.MODE_PRIVATE)
+        val user = FirebaseAuth.getInstance().currentUser
+        val userId = user?.uid
 
-        val firstName = sharedPreferences.getString("FIRST_NAME", "No Name").toString().trim()
-        val lastName = sharedPreferences.getString("LAST_NAME", "No Last Name").toString().trim()
-        val companyName = sharedPreferences.getString("COMPANY_NAME", "No Company Name")
-        val product = sharedPreferences.getString("PRODUCT_NAME", "Produk tidak ditemukan")
-        val jobdesc = sharedPreferences.getString("JOBDESC", "None")
+        if (userId != null) {
+            val db = Firebase.firestore
 
-        if (product == null) {
-            binding.productImg.visibility = View.INVISIBLE
-            binding.productImgNone.visibility = View.VISIBLE
-        } else {
-            binding.productImg.visibility = View.VISIBLE
-            binding.productImgNone.visibility = View.INVISIBLE
+            db.collection("users")
+                .document(userId)
+                .get()
+                .addOnSuccessListener { document ->
+                    if (document.exists()) {
+                        val firstName = document.getString("first_name")?.trim() ?: "User Not"
+                        val lastName = document.getString("last_name")?.trim() ?: "Found"
+                        val company = document.getString("company_name")?.trim() ?: "Perusahaan Tidak Ditemukan"
+                        val product = document.getString("product_name")?.trim() ?: "Belum memiliki produk"
+                        val jobdesc = document.getString("jobdesc")?.trim() ?: "Not Found"
+
+                        if (product == "Belum memiliki produk") {
+                            binding.productImg.visibility = View.INVISIBLE
+                            binding.productImgNone.visibility = View.VISIBLE
+                        } else {
+                            binding.productImg.visibility = View.VISIBLE
+                            binding.productImgNone.visibility = View.INVISIBLE
+                        }
+
+                        binding.tvName.text = "${firstName} ${lastName}"
+                        binding.resultCompany.text = company
+                        binding.titleProduct.text = product
+                        binding.tvJobdesc.text = jobdesc
+                    }
+
+                }
+
         }
-
-        binding.tvName.text = "${firstName} ${lastName}"
-        binding.resultCompany.text = companyName
-        binding.titleProduct.text = product
-        binding.tvJobdesc.text = jobdesc
-
 
         val dummyData = listOf(
             HistoryItem("6000", "4000", "2000", "18-01-2004"),

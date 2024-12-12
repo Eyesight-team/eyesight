@@ -1,18 +1,431 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
+    android:layout_width="wrap_content"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".ui.profile.CompanyProfileFragment">
+    tools:context=".ui.companyprofile.CompanyProfileFragment"
+    android:layout_marginBottom="56dp">
 
-    <TextView
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="?attr/actionBarSize"
+    android:layout_marginBottom="20dp"
+    >
+
+    <ImageView
+        android:id="@+id/img_eyesight"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Ini Fragment Profile"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/eyesight_icon"
+        android:src="@drawable/eyesight_logo"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        android:layout_marginTop="10dp" />
+
+    <TextView
+        android:id="@+id/tv_desc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/img_eyesight"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:text="@string/desc_quality"
+        android:textSize="24sp"
+        android:fontFamily="@font/poppins_medium"
+        android:textAlignment="center"
+        android:textColor="#4A4A4A"
+        android:maxLines="2"/>
+
+    <ImageView
+        android:id="@+id/img_google"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/company_image"
+        android:src="@drawable/google_img"
+        app:layout_constraintTop_toBottomOf="@id/tv_desc"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="16dp" />
+
+    <TextView
+        android:id="@+id/tv_visi_misi"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/visi_dan_misi"
+        android:maxLines="1"
+        app:layout_constraintTop_toBottomOf="@id/img_google"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="14dp"
+        android:textSize="24sp"
+        android:fontFamily="@font/poppins_medium"
+        android:textColor="@color/primary" />
+
+    <TextView
+        android:id="@+id/tv_visi_company"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/visi_company"
+        android:maxLines="1"
+        app:layout_constraintTop_toBottomOf="@id/tv_visi_misi"
+        app:layout_constraintStart_toStartOf="@id/tv_visi_misi"
+        android:layout_marginTop="4dp"
+        android:textSize="14sp"
+        android:fontFamily="@font/poppins_medium"
+         />
+
+    <View
+        android:id="@+id/visi_company_line"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/primary"
+        app:layout_constraintTop_toBottomOf="@id/tv_visi_company"
+        app:layout_constraintStart_toStartOf="@id/tv_visi_company"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginHorizontal="10dp"
+        />
+
+    <TextView
+        android:id="@+id/tv_title_visi_company"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/title_visi"
+        app:layout_constraintTop_toBottomOf="@id/visi_company_line"
+        app:layout_constraintStart_toStartOf="@id/tv_visi_company"
+        android:layout_marginTop="8dp"
+        android:layout_marginHorizontal="10dp"
+        android:textSize="14sp"
+        android:fontFamily="@font/poppins_regular"
+        />
+
+    <TextView
+        android:id="@+id/tv_misi_company"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Misi Perusahaan"
+        android:maxLines="1"
+        app:layout_constraintTop_toBottomOf="@id/tv_title_visi_company"
+        app:layout_constraintStart_toStartOf="@id/tv_visi_misi"
+        android:layout_marginTop="8dp"
+        android:textSize="14sp"
+        android:fontFamily="@font/poppins_medium"
+        />
+
+    <View
+        android:id="@+id/misi_company_line"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/primary"
+        app:layout_constraintTop_toBottomOf="@id/tv_misi_company"
+        app:layout_constraintStart_toStartOf="@id/tv_misi_company"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginHorizontal="10dp"
+        />
+
+    <TextView
+        android:id="@+id/tv_title_misi_company"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/title_misi"
+        app:layout_constraintTop_toBottomOf="@id/misi_company_line"
+        app:layout_constraintStart_toStartOf="@id/tv_visi_company"
+        android:layout_marginTop="8dp"
+        android:layout_marginHorizontal="10dp"
+        android:textSize="14sp"
+        android:fontFamily="@font/poppins_regular"
+        />
+
+    <View
+        android:id="@+id/line"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/white_gray"
+        app:layout_constraintTop_toBottomOf="@id/tv_title_misi_company"
+        app:layout_constraintStart_toStartOf="@id/tv_misi_company"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginHorizontal="10dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
+        />
+
+    <TextView
+        android:id="@+id/contact_us"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/line"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="32dp"
+        android:textSize="28sp"
+        android:fontFamily="@font/inter_24pt_bold"
+        android:text="@string/contact_us"
+        android:textColor="@color/black"/>
+
+    <TextView
+        android:id="@+id/phone_number"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/contact_us"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="48dp"
+        android:textSize="24sp"
+        android:fontFamily="@font/inter_24pt_regular"
+        android:text="@string/_6289668941246"
+        android:textColor="@color/black"/>
+
+    <TextView
+        android:id="@+id/email"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/phone_number"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:textSize="24sp"
+        android:fontFamily="@font/inter_24pt_regular"
+        android:textColor="@color/black"
+        android:text="@string/email_title" />
+
+    <TextView
+        android:id="@+id/company_address"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/email"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:textSize="14sp"
+        android:fontFamily="@font/inter_24pt_regular"
+        android:textColor="@color/black"
+        android:text="@string/jl_manyar_sebrangan_no_89_surabaya_indonesia"
+        android:textAlignment="center"
+        android:layout_marginTop="24dp"/>
+
+    <FrameLayout
+        android:id="@+id/img_view_email"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        app:layout_constraintTop_toBottomOf="@id/company_address"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="32dp"
+        android:background="@drawable/rounded_black">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_email"
+            android:layout_gravity="center"/>
+
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/fb"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        app:layout_constraintTop_toTopOf="@id/img_view_email"
+        app:layout_constraintEnd_toStartOf="@id/img_view_email"
+        app:layout_constraintBottom_toBottomOf="@id/img_view_email"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/rounded_black">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_wa"
+            android:layout_gravity="center"/>
+
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/ig"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        app:layout_constraintTop_toTopOf="@id/img_view_email"
+        app:layout_constraintStart_toEndOf="@id/img_view_email"
+        app:layout_constraintBottom_toBottomOf="@id/img_view_email"
+        android:layout_marginStart="16dp"
+        android:background="@drawable/rounded_black">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_ig"
+            android:layout_gravity="center"/>
+
+    </FrameLayout>
+
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="120dp"
+        app:layout_constraintTop_toBottomOf="@id/ig"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+<!--    <TextView-->
+<!--        android:id="@+id/tv_our_team"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        app:layout_constraintTop_toBottomOf="@id/line"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        android:text="Our Team"-->
+<!--        android:textSize="32sp"-->
+<!--        android:layout_marginTop="30dp"-->
+<!--        android:fontFamily="@font/poppins_medium"-->
+<!--        android:textAlignment="center"-->
+<!--        android:textColor="@color/secondary"-->
+<!--        android:maxLines="1"/>-->
+
+<!--    <ImageView-->
+<!--        android:id="@+id/img_view_logo_left"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:src="@drawable/logo_eyesight_left"-->
+<!--        app:layout_constraintEnd_toStartOf="@id/tv_our_team"-->
+<!--        app:layout_constraintTop_toTopOf="@id/tv_our_team"-->
+<!--        app:layout_constraintBottom_toBottomOf="@id/tv_our_team"-->
+<!--        android:contentDescription="@string/img_logo_left" />-->
+
+<!--    <ImageView-->
+<!--        android:id="@+id/img_view_logo_right"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:src="@drawable/logo_eyesight_right"-->
+<!--        app:layout_constraintStart_toEndOf="@id/tv_our_team"-->
+<!--        app:layout_constraintTop_toTopOf="@id/tv_our_team"-->
+<!--        app:layout_constraintBottom_toBottomOf="@id/tv_our_team"-->
+<!--        android:contentDescription="@string/img_logo_right" />-->
+
+
+
+<!--    <LinearLayout-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        app:layout_constraintTop_toBottomOf="@id/tv_our_team"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        android:layout_marginTop="16dp"-->
+<!--        android:layout_marginStart="32dp"-->
+<!--        android:orientation="horizontal">-->
+
+<!--    <FrameLayout-->
+<!--        android:id="@+id/person_1"-->
+<!--        android:layout_width="220dp"-->
+<!--        android:layout_height="220dp"-->
+<!--        android:background="@drawable/rounded_primary"-->
+<!--        app:layout_constraintTop_toBottomOf="@id/tv_our_team"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        android:layout_marginTop="16dp">-->
+
+<!--        <androidx.constraintlayout.widget.ConstraintLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content">-->
+
+<!--            <TextView-->
+<!--                android:id="@+id/tv_name_1"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="Achad\nAnsori"-->
+<!--                android:textColor="@color/white"-->
+<!--                android:textSize="18sp"-->
+<!--                android:layout_marginTop="50dp"-->
+<!--                android:layout_marginStart="20dp"-->
+<!--               app:layout_constraintTop_toTopOf="@id/img_view_person"-->
+<!--                app:layout_constraintStart_toStartOf="parent"-->
+<!--                android:fontFamily="@font/poppins_semibold"-->
+<!--                android:minLines="2"-->
+<!--                android:ellipsize="end"-->
+<!--               />-->
+
+<!--            <TextView-->
+<!--                android:id="@+id/tv_desc_1"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="Project\nManager"-->
+<!--                android:textColor="@color/white"-->
+<!--                android:textSize="11sp"-->
+<!--                android:layout_marginStart="20dp"-->
+<!--                app:layout_constraintTop_toBottomOf="@id/tv_name_1"-->
+<!--                app:layout_constraintStart_toStartOf="parent"-->
+<!--                android:fontFamily="@font/poppins_regular"-->
+<!--                android:minLines="2"-->
+<!--                android:ellipsize="end"-->
+<!--                />-->
+
+<!--        <ImageView-->
+<!--            android:id="@+id/img_view_person"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:src="@drawable/image_person"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintTop_toTopOf="parent" />-->
+
+
+<!--        </androidx.constraintlayout.widget.ConstraintLayout>-->
+
+<!--    </FrameLayout>-->
+
+<!--        <FrameLayout-->
+<!--            android:id="@+id/person_2"-->
+<!--            android:layout_width="220dp"-->
+<!--            android:layout_height="220dp"-->
+<!--            android:background="@drawable/rounded_primary"-->
+<!--            android:layout_marginTop="16dp"-->
+<!--            android:layout_marginStart="16dp">-->
+
+<!--            <androidx.constraintlayout.widget.ConstraintLayout-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content">-->
+
+<!--                <TextView-->
+<!--                    android:id="@+id/tv_name_2"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:text="Bevan\nDika"-->
+<!--                    android:textColor="@color/white"-->
+<!--                    android:textSize="18sp"-->
+<!--                    android:layout_marginTop="50dp"-->
+<!--                    android:layout_marginStart="20dp"-->
+<!--                    app:layout_constraintTop_toTopOf="@id/img_view_person2"-->
+<!--                    app:layout_constraintStart_toStartOf="parent"-->
+<!--                    android:fontFamily="@font/poppins_semibold"-->
+<!--                    android:minLines="2"-->
+<!--                    android:ellipsize="end"-->
+<!--                    />-->
+
+<!--                <TextView-->
+<!--                    android:id="@+id/tv_desc_2"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:text="Project\nManager"-->
+<!--                    android:textColor="@color/white"-->
+<!--                    android:textSize="11sp"-->
+<!--                    android:layout_marginStart="20dp"-->
+<!--                    app:layout_constraintTop_toBottomOf="@id/tv_name_2"-->
+<!--                    app:layout_constraintStart_toStartOf="parent"-->
+<!--                    android:fontFamily="@font/poppins_regular"-->
+<!--                    android:minLines="2"-->
+<!--                    android:ellipsize="end"-->
+<!--                    />-->
+
+<!--                <ImageView-->
+<!--                    android:id="@+id/img_view_person2"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:src="@drawable/image_person"-->
+<!--                    app:layout_constraintEnd_toEndOf="parent"-->
+<!--                    app:layout_constraintTop_toTopOf="parent" />-->
+
+
+<!--            </androidx.constraintlayout.widget.ConstraintLayout>-->
+
+<!--        </FrameLayout>-->
+
+<!--    </LinearLayout>-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>
