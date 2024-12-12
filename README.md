@@ -50,4 +50,4 @@ Eyesight is a powerful tool designed to simplify quality control processes throu
 
 You can download the APK from the below:
 
-https://drive.google.com/file/d/1SWtpmtrUHQPDa-6kepWkmwjYsUVxKQar/view?usp=drive_link
+https://drive.google.com/drive/folders/1QxS6vrmHcI2SElIExbDEurvUL3QQGITG?usp=drive_link
