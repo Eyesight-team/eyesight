@@ -16,8 +16,9 @@ Eyesight is a powerful tool designed to simplify quality control processes throu
 - Data History: Analyze data in real time for immediate feedback and decision making.
 - Scalable: Easily integrated into existing production environments for seamless quality control.
 
+# App View
 <details>
-  <summary>App View Screenshots</summary>
+  <summary>Click Here</summary>
   <table>
     <tr>
       <td><img src="https://github.com/user-attachments/assets/534ea2a4-41d4-4104-bfb5-436e7d73718b" alt="1" width="100%"></td>
