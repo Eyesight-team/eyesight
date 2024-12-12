@@ -5,21 +5,27 @@ import android.app.Activity
 import android.app.AlertDialog
 import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothDevice
+import android.bluetooth.BluetoothGatt
 import android.bluetooth.BluetoothManager
+import android.bluetooth.BluetoothProfile
 import android.bluetooth.le.ScanCallback
 import android.bluetooth.le.ScanResult
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
+import android.os.Handler
 import android.provider.Settings
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ListView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -27,6 +33,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import com.example.eyesight.R
+import com.example.eyesight.adapter.LeDeviceListAdapter
 import com.example.eyesight.ui.sheet.ProductSelectionBottomSheetFragment
 import com.example.eyesight.databinding.FragmentHomeBinding
 import com.example.eyesight.ui.MainActivity
@@ -35,6 +42,9 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.firestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import android.bluetooth.BluetoothGattCallback
+import android.net.Uri
+
 
 class HomeFragment : Fragment() {
 
@@ -46,20 +56,24 @@ class HomeFragment : Fragment() {
 
     private lateinit var bluetoothAdapter: BluetoothAdapter
     private val REQUEST_ENABLE_BT = 1
-    private var scanning = false
 
-    private val LOCATION_PERMISSION_REQUEST_CODE = 1001
     private val BLUETOOTH_PERMISSION_REQUEST_CODE = 101
+
+    private var bluetoothGatt: BluetoothGatt? = null
 
     private val enableBtLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
+                // Bluetooth has been enabled, proceed with scanning
                 startScanning()
             } else {
-                Toast.makeText(context, "Bluetooth tidak diaktifkan", Toast.LENGTH_SHORT).show()
+                // Bluetooth was not enabled, show message
+//                Toast.makeText(context, "Bluetooth tidak diaktifkan", Toast.LENGTH_SHORT).show()
             }
+
         }
 
+    @RequiresApi(Build.VERSION_CODES.S)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -69,6 +83,8 @@ class HomeFragment : Fragment() {
         val root: View = binding.root
 
         sharedPreferences = requireContext().getSharedPreferences("UserPreferences", Context.MODE_PRIVATE)
+
+
 
         try {
             (activity as? MainActivity)?.setToolbarTitle("Vision")
@@ -124,8 +140,6 @@ class HomeFragment : Fragment() {
 
         }
 
-//        checkProductStatus()
-
         binding.btnSelectProduct.setOnClickListener {
             Toast.makeText(context, "Ditekan", Toast.LENGTH_SHORT).show()
             val bottomSheetFragment = ProductSelectionBottomSheetFragment()
@@ -133,7 +147,6 @@ class HomeFragment : Fragment() {
         }
 
         binding.readGuide.setOnClickListener {
-            showToast("Maaf, panduan belum ada !")
         }
 
         binding.btnBuyProduct.setOnClickListener {
@@ -146,170 +159,248 @@ class HomeFragment : Fragment() {
             )
         }
 
-        initBluetooth()
+            initBluetooth()
 
         return root
     }
 
+    @RequiresApi(Build.VERSION_CODES.S)
     private fun initBluetooth() {
-        Toast.makeText(context, "Init Bluetooth..", Toast.LENGTH_SHORT).show()
 
-        if (ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.BLUETOOTH_SCAN) != PackageManager.PERMISSION_GRANTED ||
-            ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED ||
-            ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-
-            // Jika izin belum diberikan, minta izin
-            ActivityCompat.requestPermissions(
-                requireActivity(),
-                arrayOf(
-                    Manifest.permission.BLUETOOTH_SCAN,
-                    Manifest.permission.BLUETOOTH_CONNECT,
+        // Memeriksa apakah perangkat memiliki izin yang diperlukan berdasarkan versi Android
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            // Android 12 dan lebih tinggi memerlukan izin Bluetooth
+            if (ActivityCompat.checkSelfPermission(
+                    requireContext(),
+                    Manifest.permission.BLUETOOTH_SCAN
+                ) != PackageManager.PERMISSION_GRANTED ||
+                ActivityCompat.checkSelfPermission(
+                    requireContext(),
+                    Manifest.permission.BLUETOOTH_CONNECT
+                ) != PackageManager.PERMISSION_GRANTED ||
+                ActivityCompat.checkSelfPermission(
+                    requireContext(),
                     Manifest.permission.ACCESS_FINE_LOCATION
-                ),
-                BLUETOOTH_PERMISSION_REQUEST_CODE
-            )
-            return
+                ) != PackageManager.PERMISSION_GRANTED
+            ) {
+                // Jika izin belum diberikan, meminta izin
+                ActivityCompat.requestPermissions(
+                    requireActivity(),
+                    arrayOf(
+                        Manifest.permission.BLUETOOTH_SCAN,
+                        Manifest.permission.BLUETOOTH_CONNECT,
+                        Manifest.permission.ACCESS_FINE_LOCATION
+                    ),
+                    BLUETOOTH_PERMISSION_REQUEST_CODE
+                )
+                return // Keluarkan dari fungsi jika izin belum diberikan
+            }
+        } else {
+            // Untuk perangkat dengan versi Android lebih rendah dari Android 12
+            if (ActivityCompat.checkSelfPermission(
+                    requireContext(),
+                    Manifest.permission.ACCESS_FINE_LOCATION
+                ) != PackageManager.PERMISSION_GRANTED) {
+                // Meminta izin lokasi untuk perangkat dengan Android versi lebih lama
+                ActivityCompat.requestPermissions(
+                    requireActivity(),
+                    arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
+                    BLUETOOTH_PERMISSION_REQUEST_CODE
+                )
+                return
+            }
         }
 
-        // Memastikan Bluetooth tersedia
+        // Setelah izin diberikan, lanjutkan untuk menginisialisasi Bluetooth
         val bluetoothManager = requireContext().getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager
         bluetoothAdapter = bluetoothManager.adapter
 
         if (bluetoothAdapter == null) {
-            Toast.makeText(context, "Bluetooth tidak tersedia di perangkat ini", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, "Device does not support Bluetooth", Toast.LENGTH_SHORT).show()
             return
         }
 
-        // Memeriksa apakah Bluetooth sudah diaktifkan
+        // Memeriksa apakah Bluetooth diaktifkan atau tidak
         if (!bluetoothAdapter.isEnabled) {
             val enableBtIntent = Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE)
             enableBtLauncher.launch(enableBtIntent)
-//            startActivityForResult
         } else {
+            // Jika Bluetooth sudah diaktifkan, mulai pemindaian perangkat
             startScanning()
         }
     }
 
-    private fun startScanning() {
-        showToast("Start Scanning...")
-        if (scanning) return  // Jangan mulai pemindaian jika sudah berjalan
 
-        // Periksa izin lokasi
-        if (ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // Jika izin belum diberikan, minta izin
-            showToast("Memulai perizinan...")
-            ActivityCompat.requestPermissions(requireActivity(),
-                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
-                LOCATION_PERMISSION_REQUEST_CODE)
-            return
-        }
-
-        val bluetoothLeScanner = bluetoothAdapter.bluetoothLeScanner
-        bluetoothLeScanner.startScan(scanCallback)
-        scanning = true
-        Toast.makeText(context, "Memulai pemindaian BLE...", Toast.LENGTH_SHORT).show()
-    }
-
-
-    private fun stopScanning() {
-        if (!scanning) return
-
-        val bluetoothLeScanner = bluetoothAdapter.bluetoothLeScanner
-        if (ActivityCompat.checkSelfPermission(
-                requireContext(),
-                Manifest.permission.BLUETOOTH_SCAN
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
-            return
-        }
-        bluetoothLeScanner.stopScan(scanCallback)
-        scanning = false
-        Toast.makeText(context, "Pemindaian BLE dihentikan", Toast.LENGTH_SHORT).show()
-    }
-
-    // Callback untuk menangani perangkat yang ditemukan selama pemindaian
-    private val scanCallback = object : ScanCallback() {
-        override fun onScanResult(callbackType: Int, result: ScanResult?) {
+    private val leScanCallback = object : ScanCallback() {
+        override fun onScanResult(callbackType: Int, result: ScanResult) {
             super.onScanResult(callbackType, result)
-            result?.let { scanResult ->
-                val device: BluetoothDevice = scanResult.device
 
-                val deviceName = if (ActivityCompat.checkSelfPermission(
-                        requireContext(),
-                        Manifest.permission.BLUETOOTH_CONNECT
-                    ) == PackageManager.PERMISSION_GRANTED) {
-                    Log.d("BLE_NAME", "Nama Perangkat: ${device.name}")
-                    showToast("BLE NAME: ${device.name}")
-                    device.name ?: "Perangkat Tidak Dikenal" // Nama perangkat jika diizinkan
-                } else {
-                    // Jika izin belum diberikan
-                    Log.w("BLE", "Izin Bluetooth CONNECT belum diberikan, tidak dapat membaca nama perangkat")
-                    return
-                }
+            val device = result.device
+            if (ActivityCompat.checkSelfPermission(
+                    requireContext(),
+                    Manifest.permission.BLUETOOTH_CONNECT
+                ) != PackageManager.PERMISSION_GRANTED
+            ) {
 
-                val deviceAddress = device.address
-                Log.d("BLE", "Perangkat ditemukan: $deviceName, Alamat: $deviceAddress")
+                return
+            }
+            Log.d("BLE", "Device found: ${device.name}")
 
-                // Misalnya, coba sambungkan ke perangkat ini
-                // Kamu bisa menyaring perangkat berdasarkan nama atau alamat jika diperlukan
-
-
-                if (deviceName == "MYBOOKHYPE") {
-                    connectToDevice(device)
-                }
+            // Pastikan nama perangkat Jetson sesuai
+            if (device.name == device.name) {
+                connectToDevice(device)
             }
         }
 
         override fun onScanFailed(errorCode: Int) {
-            showToast("on Scan Failed: $errorCode")
             super.onScanFailed(errorCode)
-            Log.e("BLE", "Pemindaian gagal dengan kode error: $errorCode")
+            Log.e("BLE", "Scan failed with error: $errorCode")
         }
     }
 
-    @Deprecated("Deprecated in Java")
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+    private fun startScanning() {
 
-        if (requestCode == BLUETOOTH_PERMISSION_REQUEST_CODE) {
-            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
-                // Izin diberikan, bisa lanjut menggunakan Bluetooth
-                startScanning()
-            } else {
-                if (ActivityCompat.shouldShowRequestPermissionRationale(
-                        requireActivity(),
+        if (bluetoothAdapter == null || !bluetoothAdapter.isEnabled) {
+//            Toast.makeText(context, "Bluetooth not enabled", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        val bluetoothLeScanner = bluetoothAdapter.bluetoothLeScanner
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            if (ActivityCompat.checkSelfPermission(
+                    requireContext(),
+                    Manifest.permission.BLUETOOTH_SCAN
+                ) != PackageManager.PERMISSION_GRANTED
+            ) {
+                requestBluetoothScanPermission()
+                return
+            }
+        } else {
+            if (ActivityCompat.checkSelfPermission(
+                    requireContext(),
+                    Manifest.permission.ACCESS_FINE_LOCATION
+                ) != PackageManager.PERMISSION_GRANTED
+            ) {
+                requestLocationPermission()
+                return
+            }
+        }
+
+        // Jika izin sudah diberikan, mulai pemindaian
+        bluetoothLeScanner.startScan(leScanCallback)
+    }
+
+    private fun connectToDevice(device: BluetoothDevice) {
+        Log.d("BLE", "Connecting to device: ${device.name}")
+        val gatt = if (ActivityCompat.checkSelfPermission(
+                requireContext(),
+                Manifest.permission.BLUETOOTH_CONNECT
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            return
+        } else {
+
+        }
+        device.connectGatt(requireContext(), false, gattCallback)
+    }
+
+    private val gattCallback = object : BluetoothGattCallback() {
+        override fun onConnectionStateChange(gatt: BluetoothGatt, status: Int, newState: Int) {
+            super.onConnectionStateChange(gatt, status, newState)
+
+            if (newState == BluetoothProfile.STATE_CONNECTED) {
+                Log.d("GATT", "Connected to GATT server.")
+                if (ActivityCompat.checkSelfPermission(
+                        requireContext(),
                         Manifest.permission.BLUETOOTH_CONNECT
-                    )
+                    ) != PackageManager.PERMISSION_GRANTED
                 ) {
-                    // Izin Bluetooth ditolak, beri penjelasan
-                    showToast("Izin Bluetooth diperlukan untuk memindai perangkat")
-                } else {
-                    // Izin ditolak secara permanen, arahkan pengguna ke pengaturan
-                    showBluetoothPermissionDeniedDialog()
+                    return
                 }
+                gatt.discoverServices()  // Mulai discovery layanan setelah terhubung
+            } else if (newState == BluetoothProfile.STATE_DISCONNECTED) {
+                Log.d("GATT", "Disconnected from GATT server.")
+                gatt.close() // Tutup koneksi saat terputus
+            }
+        }
+
+        override fun onServicesDiscovered(gatt: BluetoothGatt, status: Int) {
+            super.onServicesDiscovered(gatt, status)
+            if (status == BluetoothGatt.GATT_SUCCESS) {
+                Log.d("GATT", "Services discovered successfully.")
+            } else {
+                Log.e("GATT", "Failed to discover services.")
             }
         }
     }
 
-    private fun showBluetoothPermissionDeniedDialog() {
+    @RequiresApi(Build.VERSION_CODES.S)
+    @Deprecated("Deprecated in Java")
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+
+        when (requestCode) {
+            BLUETOOTH_PERMISSION_REQUEST_CODE -> {
+                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    startScanning()
+                } else {
+                }
+            }
+
+            LOCATION_PERMISSION_REQUEST_CODE -> {
+                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    startScanning()
+                } else {
+                    showPermissionDeniedDialog()
+                }
+            }
+        }
+
+    }
+
+    private fun showPermissionDeniedDialog() {
         val builder = AlertDialog.Builder(requireContext())
-        builder.setTitle("Peringatan")
-        builder.setMessage("Perangkat menggunakan akses Bluetooth. Jika Anda menolak izin, aplikasi akan keluar. Apakah Anda ingin melanjutkan ke pengaturan Bluetooth?")
+        builder.setTitle("Izin Diperlukan")
+        builder.setMessage("Aplikasi membutuhkan izin Bluetooth untuk dapat melanjutkan. Apakah Anda ingin membuka pengaturan aplikasi untuk memberikan izin?")
         builder.setPositiveButton("Ya") { _, _ ->
-            // Arahkan pengguna ke pengaturan Bluetooth
-            val intent = Intent(Settings.ACTION_BLUETOOTH_SETTINGS)
+            val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+            val uri = Uri.fromParts("package", requireContext().packageName, null)
+            intent.data = uri
             startActivity(intent)
         }
         builder.setNegativeButton("Tidak") { _, _ ->
-            activity?.finish()
+            System.exit(0)
         }
-        builder.setCancelable(false)  // Mencegah pengguna menutup dialog dengan menekan di luar
+        builder.setCancelable(false)
         builder.show()
     }
 
-    private fun connectToDevice(device: BluetoothDevice) {
-        // Lakukan koneksi dengan perangkat BLE yang ditemukan
-        // Kode untuk menghubungkan ke perangkat dapat ditambahkan di sini
+    private fun requestBluetoothScanPermission() {
+        // Minta izin Bluetooth Scan
+        ActivityCompat.requestPermissions(
+            requireActivity(),
+            arrayOf(Manifest.permission.BLUETOOTH_SCAN),
+            BLUETOOTH_PERMISSION_REQUEST_CODE
+        )
+    }
+
+    private fun requestLocationPermission() {
+        // Minta izin Location untuk Android 11 atau lebih rendah
+        ActivityCompat.requestPermissions(
+            requireActivity(),
+            arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
+            LOCATION_PERMISSION_REQUEST_CODE
+        )
+    }
+
+
+    override fun onDestroy() {
+        super.onDestroy()
         if (ActivityCompat.checkSelfPermission(
                 requireContext(),
                 Manifest.permission.BLUETOOTH_CONNECT
@@ -317,34 +408,16 @@ class HomeFragment : Fragment() {
         ) {
             return
         }
-        showToast("Connect to Device: ${device.name}")
-        Toast.makeText(context, "Mencoba untuk menghubungkan ke perangkat: ${device.name}", Toast.LENGTH_SHORT).show()
-        Log.d("BLE", "Mencoba menghubungkan ke perangkat: ${device.name}")
-    }
-
-    private fun checkBluetoothPermission() {
-        if (ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED ||
-            ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-
-            // Jika izin belum diberikan, minta izin
-            ActivityCompat.requestPermissions(
-                requireActivity(),
-                arrayOf(Manifest.permission.BLUETOOTH_CONNECT, Manifest.permission.ACCESS_FINE_LOCATION),
-                BLUETOOTH_PERMISSION_REQUEST_CODE
-            )
-        } else {
-            // Izin sudah diberikan, bisa akses Bluetooth
-            startScanning()
-        }
-    }
-
-    private fun showToast(msg: String) {
-        Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
+        bluetoothGatt?.close()  // Menutup koneksi GATT saat aktivitas atau fragment dihancurkan
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
-        // Null-kan _binding saat view dihancurkan untuk mencegah memory leaks
         _binding = null
     }
+
+        companion object {
+            private const val LOCATION_PERMISSION_REQUEST_CODE = 1001
+            private const val BLUETOOTH_PERMISSION_REQUEST_CODE = 1002
+        }
 }

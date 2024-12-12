@@ -176,12 +176,14 @@
         android:fontFamily="@font/poppins_medium"/>
 
     <TextView
+        android:id="@+id/history_notyet"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/notyet_history"
         app:layout_constraintTop_toBottomOf="@id/tv_title_history_result"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="10dp"
         android:visibility="gone" />
 
     <androidx.recyclerview.widget.RecyclerView

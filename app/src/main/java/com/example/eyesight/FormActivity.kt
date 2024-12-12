@@ -107,8 +107,6 @@ class FormActivity : AppCompatActivity() {
                     optionProduct
                 )
 
-                Toast.makeText(this, "Data saved successfully!", Toast.LENGTH_SHORT).show()
-
                 startActivity(Intent(this@FormActivity, MainActivity::class.java))
                 finish()
             } else {
@@ -129,11 +127,6 @@ class FormActivity : AppCompatActivity() {
                     binding.radioGroup2.visibility = View.VISIBLE
                     binding.titleOptionProduct.visibility = View.VISIBLE
 
-//                    sharedPreferences.edit().apply{
-//                        putBoolean("HAVE_PRODUCT", true)
-//                        putString("PRODUCT", "Already have product")
-//                        apply()
-//                    }
                 }
                 R.id.radioButtonOptionNotYet -> {
                     val colorStateList = ContextCompat.getColorStateList(this, R.color.secondary)
@@ -141,11 +134,6 @@ class FormActivity : AppCompatActivity() {
                     binding.radioGroup2.visibility = View.GONE
                     binding.titleOptionProduct.visibility = View.GONE
 
-//                    sharedPreferences.edit().apply{
-//                        putBoolean("HAVE_PRODUCT", false)
-//                        putString("PRODUCT", "Do not have the product")
-//                        apply()
-//                    }
                 }
             }
         }
@@ -172,12 +160,10 @@ class FormActivity : AppCompatActivity() {
                 jobDesc.isNotEmpty() &&
 
                 (haveProduct || !haveProduct) &&
-                // Validasi untuk pilihan produk
                 (haveProduct && optionProduct != "Produk tidak ditemukan") || // Jika sudah punya produk, pilih produk
                 (!haveProduct && optionProduct == "Belum memiliki Produk")
     }
 
-    // Fungsi untuk menyimpan data pengguna ke SharedPreferences
     private fun saveUserData(
         firstName: String,
         lastName: String,
@@ -205,7 +191,8 @@ class FormActivity : AppCompatActivity() {
                 "company_address" to companyAddress,
                 "jobdesc" to jobDesc,
                 "have_product" to haveProduct,
-                "product_name" to productOption
+                "product_name" to productOption,
+                "history" to false
             )
             db.collection("users")
                 .document(userId)

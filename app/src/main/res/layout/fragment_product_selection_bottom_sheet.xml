@@ -27,19 +27,19 @@
             android:id="@+id/radioProductOption1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Series A" />
+            android:text="Jetson Xavier NX Series" />
 
         <RadioButton
             android:id="@+id/radioProductOption2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Series B" />
+            android:text="Jetson TX2 Series" />
 
         <RadioButton
             android:id="@+id/radioProductOption3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Series C" />
+            android:text="Jetson Nano" />
     </RadioGroup>
 
     <Button

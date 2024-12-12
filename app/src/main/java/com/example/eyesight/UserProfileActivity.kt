@@ -53,15 +53,27 @@ class UserProfileActivity : AppCompatActivity() {
                         val firstName = document.getString("first_name")?.trim() ?: "User Not"
                         val lastName = document.getString("last_name")?.trim() ?: "Found"
                         val company = document.getString("company_name")?.trim() ?: "Perusahaan Tidak Ditemukan"
-                        val product = document.getString("product_name")?.trim() ?: "Belum memiliki produk"
                         val jobdesc = document.getString("jobdesc")?.trim() ?: "Not Found"
+                        val haveProduct = document.getBoolean("have_product")
+                        val history = document.getBoolean("history")
+                        val product = document.getString("product_name")?.trim() ?: "Not Found"
 
-                        if (product == "Belum memiliki produk") {
+                        if (haveProduct == false) {
                             binding.productImg.visibility = View.INVISIBLE
                             binding.productImgNone.visibility = View.VISIBLE
+
                         } else {
                             binding.productImg.visibility = View.VISIBLE
                             binding.productImgNone.visibility = View.INVISIBLE
+
+                        }
+
+                        if (history == true) {
+                            binding.rvReview.visibility = View.VISIBLE
+                            binding.historyNotyet.visibility = View.GONE
+                        } else {
+                            binding.rvReview.visibility = View.INVISIBLE
+                            binding.historyNotyet.visibility = View.VISIBLE
                         }
 
                         binding.tvName.text = "${firstName} ${lastName}"
@@ -84,7 +96,6 @@ class UserProfileActivity : AppCompatActivity() {
         binding.rvReview.layoutManager = layoutManager
 
         historyAdapter = HistoryAdapter(dummyData) { total, lulus, gagal, date ->
-            showToast("Total: ${total}, Lulus: ${lulus}, Gagal: ${gagal}, Date: ${date}")
         }
 
         binding.rvReview.adapter = historyAdapter
@@ -110,7 +121,4 @@ class UserProfileActivity : AppCompatActivity() {
         editor.apply()
     }
 
-    private fun showToast(msg: String) {
-        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
-    }
 }

@@ -77,10 +77,9 @@ class HistoryFragment : Fragment() {
                 .document(userId)
                 .get()
                 .addOnSuccessListener { document ->
-                    val hasProduct = document.getBoolean("have_product")
+                    val history = document.getBoolean("history")
 
-
-                        if (!hasProduct!!) {
+                        if (!history!!) {
 
                             binding.rvReview.visibility = View.INVISIBLE
                             binding.btnPlayNow.visibility = View.VISIBLE
